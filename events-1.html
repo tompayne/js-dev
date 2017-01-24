@@ -37,18 +37,31 @@
         };
         
         $('.clickable')
-        .click(function (event) {
-            showEventMessage.call(this, {eventType: event.type});
-            event.stopImmediatePropagation();
+        .on('click dblclick mousedown', function (event) {
+            if (!event.isPropagationStopped() &&
+                !event.isImmediatePropagationStopped() &&
+                !event.isDefaultPrevented()) {
+                  
+                showEventMessage.call(this, {eventType: event.type});
+                event.stopPropagation(); 
+                
+                if (event.type === 'mousedown')
+                    event.preventDefault(); 
+            }   
         })
-        .dblclick(function (event) {
-            showEventMessage.call(this, {eventType: event.type});
+       
+        .on('mousedown', function(event) { 
+            if (!event.isPropagationStopped() &&
+               !event.isImmediatePropagationStopped() &&
+               !event.isDefaultPrevented()) {
+                
+                 showEventMessage.call(this, {eventType: event.type, suffix: '#2<br/>'});
+            }
         })
-        .mousedown(function(event) { 
-            showEventMessage.call(this, {eventType: event.type});
-            event.stopImmediatePropagation();
-            event.preventDefault();
-        });
+        
+        .on('selectstart', function(event) {
+             return false
+            })
     });
     
     </script>
