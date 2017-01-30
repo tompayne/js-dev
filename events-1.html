@@ -34,9 +34,24 @@
                         options.suffix;
         $('#Messages').append(message);
                 
+        },
+        
+        namedHandler = function(event)
+        {
+            if (!event.isPropagationStopped() &&
+                !event.isImmediatePropagationStopped() &&
+                !event.isDefaultPrevented()) {
+                  
+                showEventMessage.call(this, {eventType: 'namedHandler ' + event.type});
+                event.stopPropagation(); 
+            }
         };
+            
         
         $('.clickable')
+        
+        .off('click')
+        .on('click dblclick', namedHandler)
         .on('click dblclick mousedown', function (event) {
             if (!event.isPropagationStopped() &&
                 !event.isImmediatePropagationStopped() &&
@@ -49,7 +64,7 @@
                     event.preventDefault(); 
             }   
         })
-       
+        //.off('click mousedown')
         .on('mousedown', function(event) { 
             if (!event.isPropagationStopped() &&
                !event.isImmediatePropagationStopped() &&
